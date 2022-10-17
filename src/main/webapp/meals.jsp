@@ -9,8 +9,9 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<p><a href="meals?action=insert">Add User</a></p>
 <table style="border-collapse: collapse" border="1" cellspacing = "4">
-    <tr><th>Date</th><th>Description</th><th>Calories</th></tr>
+    <tr><th>Date</th><th>Description</th><th>Calories</th><th>&nbsp;</th><th>&nbsp;</th></tr>
     <c:forEach var="meal" items="${meals}">
         <tr>
             <td><fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
@@ -25,8 +26,11 @@
                     <p style="color:green;">${meal.calories}</p>
                 </c:if>
             </td>
+            <td><a href="meals?action=edit&mealId=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="meals?action=delete&mealId=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
+
 </body>
 </html>
