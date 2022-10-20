@@ -9,7 +9,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<p><a href="meals?action=insert">Add Meal</a></p>
+<p><a href="meals?action=add">Add Meal</a></p>
 <table style="border-collapse: collapse" border="1" cellspacing = "4">
     <tr><th>Date</th><th>Description</th><th>Calories</th><th>&nbsp;</th><th>&nbsp;</th></tr>
     <c:forEach var="meal" items="${meals}">
