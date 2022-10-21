@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface MealsDao {
     Meal add(Meal meal);
-    void delete(Integer id);
+
+    void delete(int id);
+
     Meal update(Meal meal);
-    Meal read(Integer id);
+
+    Meal read(int id);
+
     List<Meal> getAllList();
 }

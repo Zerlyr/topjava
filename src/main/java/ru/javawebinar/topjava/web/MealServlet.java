@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.dao.MealsMap;
+import ru.javawebinar.topjava.dao.MealsDatabase;
 import ru.javawebinar.topjava.dao.MealsDao;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -25,20 +25,21 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void init() {
-        dao = new MealsMap();
+        dao = new MealsDatabase();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        log.debug("meals table");
         String action = request.getParameter("action");
         if (action == null) action = "";
         String forward;
 
         if (action.equalsIgnoreCase("add")) {
+            log.info("meals edit page");
             request.setAttribute("action", "Add");
             forward = "meal.jsp";
         } else {
+            log.info("meals table");
             forward = "mealsTable.jsp";
             request.setAttribute("meals", MealsUtil.filteredByStreams(dao.getAllList(), LocalTime.MIDNIGHT, LocalTime.MAX, CALORIES_PER_DAY));
         }
@@ -53,15 +54,15 @@ public class MealServlet extends HttpServlet {
 
         switch (action.toLowerCase()) {
             case "delete": {
-                Integer mealId = Integer.valueOf(request.getParameter("mealId"));
-                log.debug("meals with id " + mealId + " delete");
+                Integer mealId = getId(request);
+                log.info("meals with id {} delete", mealId );
                 dao.delete(mealId);
                 response.sendRedirect(request.getContextPath() + "/meals");
                 break;
             }
             case "update": {
-                Integer mealId = Integer.valueOf(request.getParameter("mealId"));
-                log.debug("meals with id " + mealId + " update");
+                Integer mealId = getId(request);
+                log.info("meals with id {} update", mealId );
                 Meal meal = dao.read(mealId);
                 request.setAttribute("meal", meal);
                 request.setAttribute("action", "Update");
@@ -74,11 +75,11 @@ public class MealServlet extends HttpServlet {
                         Integer.parseInt(request.getParameter("calories")));
                 String mealId = request.getParameter("mealId");
                 if (mealId == null || mealId.isEmpty()) {
-                    log.debug("meals add");
+                    log.info("meals add");
                     dao.add(meal);
                 }
                 else {
-                    log.debug("meals with id " + mealId + " update");
+                    log.info("meals with id {} update", mealId );
                     meal.setId(Integer.valueOf(mealId));
                     dao.update(meal);
                 }
@@ -90,5 +91,9 @@ public class MealServlet extends HttpServlet {
                 break;
             }
         }
+    }
+
+    private Integer getId(HttpServletRequest request) {
+        return Integer.valueOf(request.getParameter("mealId"));
     }
 }

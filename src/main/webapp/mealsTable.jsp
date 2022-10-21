@@ -13,7 +13,7 @@
 <table style="border-collapse: collapse" border="1" cellspacing = "4">
     <tr><th>Date</th><th>Description</th><th>Calories</th><th>&nbsp;</th><th>&nbsp;</th></tr>
     <c:forEach var="meal" items="${meals}">
-        <tr style="color:<c:out value="${not meal.excess ? 'green' : 'red'}"/>">
+        <tr style="color:${not meal.excess ? 'green' : 'red'}">
             <td><fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                 <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}" /></td>
             <td>${meal.description}</td>

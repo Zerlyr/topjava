@@ -6,7 +6,7 @@
   <title>${action} meal</title>
 </head>
 <body>
-<h2>${action} meal</h2>
+<h2>${empty meal.id ? 'Add' : 'Update'} meal</h2>
 <form method="POST" action='meals?action=add-update' name="frmAddMeal">
   Date : <input type="datetime-local" name="date" id="dateTime" value="${meal.dateTime}"/> <br />
   <script>
