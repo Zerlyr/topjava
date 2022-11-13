@@ -18,27 +18,27 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal create(Meal meal, Integer userId) {
-        return checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+    public Meal create(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 
-    public void delete(int mealId, Integer userId) {
+    public void delete(int mealId, int userId) {
         checkNotFoundWithId(repository.delete(mealId, userId), mealId);
     }
 
-    public Meal get(int mealId, Integer userId) {
+    public Meal get(int mealId, int userId) {
         return checkNotFoundWithId(repository.get(mealId, userId), mealId);
     }
 
-    public List<Meal> getAll(Integer userID) {
-        return repository.getAll(userID);
+    public List<Meal> getAll(int userId) {
+        return repository.getAll(userId);
     }
 
-    public List<Meal> getFiltered(Integer userId, LocalDate start, LocalDate end) {
+    public List<Meal> getFiltered(int userId, LocalDate start, LocalDate end) {
         return repository.getFilteredByDate(userId, start, end);
     }
 
-    public void update(Meal meal, Integer userId) {
-        create(meal, userId);
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 }

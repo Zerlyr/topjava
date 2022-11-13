@@ -23,15 +23,15 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        final Integer USER_ID = 1;
-        MealsUtil.meals.forEach(meal -> save(meal, USER_ID));
+        final Integer userId = 1;
+        MealsUtil.meals.forEach(meal -> save(meal, userId));
 
-        final Integer ADMIN_ID = 2;
-        save(new Meal(LocalDateTime.of(2022, Month.JANUARY, 12, 14, 32), "обед", 650), ADMIN_ID);
+        final Integer adminId = 2;
+        save(new Meal(LocalDateTime.of(2022, Month.JANUARY, 12, 14, 32), "обед", 650), adminId);
     }
 
     @Override
-    public Meal save(Meal meal, Integer userId) {
+    public synchronized Meal save(Meal meal, Integer userId) {
         Map<Integer, Meal> meals;
         if (!repository.containsKey(userId)) {
             meals = new ConcurrentHashMap<>();
@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     private List<Meal> getFiltered(Integer userId, Predicate<Meal> condition) {
         Map<Integer, Meal> meals = repository.get(userId);
-        return meals == null ? new ArrayList<>() : meals.values().stream()
+        return meals == null ? Collections.emptyList() : meals.values().stream()
                 .filter(condition)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
